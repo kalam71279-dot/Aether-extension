@@ -1,0 +1,7 @@
+*.env
+.env
+.env.*
+!.env.example
+
+# Local test output and editor files
+node_modules/

@@ -1,0 +1,1 @@
+const html = require('fs').readFileSync('ddg_html.html', 'utf8'); const r = [...html.matchAll(/<a class="result__url" href="([^"]+)">([\s\S]*?)<\/a>[\s\S]*?<a class="result__snippet[^>]*>([\s\S]*?)<\/a>/gi)]; console.log(r.slice(0,3).map(x => x[1] + ' - ' + x[3].trim()).join('\n\n'));

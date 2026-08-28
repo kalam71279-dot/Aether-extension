@@ -1,0 +1,73 @@
+{
+  "manifest_version": 3,
+  "name": "Aether OS - NextGen Workspace",
+  "version": "1.0.0",
+  "description": "AI-powered futuristic workspace replacing your new tab with a radial command hub, contextual AI tools, and multimodal image analysis.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "contextMenus",
+    "clipboardWrite",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://api.duckduckgo.com/*",
+    "https://*.wikipedia.org/*",
+    "https://hacker-news.firebaseio.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "chrome_url_overrides": {
+    "newtab": "dashboard/newtab.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Aether OS Settings",
+    "default_icon": {}
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js",
+        "videoEnhancer.js"
+      ],
+      "css": [
+        "videoEnhancer.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {},
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "dashboard/newtab.html",
+        "dashboard/index.html",
+        "dashboard/index2.html",
+        "dashboard/index3.html",
+        "dashboard/index4.html",
+        "dashboard/app.js",
+        "dashboard/index2.js",
+        "dashboard/index3.js",
+        "dashboard/index4.js",
+        "dashboard/ui-switcher.js",
+        "dashboard/ui-switcher.css",
+        "dashboard/styles.css",
+        "dashboard/bloub.gif"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,267 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Aether Video Enhancer — CSS (Global Overlay)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── HUD Toggle Icon ── */
+.aether-ve-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(15, 15, 30, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  padding: 0;
+}
+.aether-ve-toggle:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+  border-color: #38bdf8;
+}
+
+/* ── HUD Panel ── */
+.aether-ve-panel {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  width: 280px;
+  max-height: 460px;
+  overflow-y: auto;
+  background: rgba(10, 10, 28, 0.95);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 16px;
+  color: #e2e8f0;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(56, 189, 248, 0.2);
+  display: none;
+  animation: aether-ve-fadeIn 0.2s ease-out;
+}
+.aether-ve-panel.open {
+  display: block;
+}
+@keyframes aether-ve-fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar */
+.aether-ve-panel::-webkit-scrollbar { width: 4px; }
+.aether-ve-panel::-webkit-scrollbar-track { background: transparent; }
+.aether-ve-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 4px; }
+
+/* ── Section Headers ── */
+.aether-ve-section {
+  margin-bottom: 14px;
+}
+.aether-ve-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #38bdf8;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Sliders ── */
+.aether-ve-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.aether-ve-slider-label {
+  width: 72px;
+  font-size: 12px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+.aether-ve-slider-value {
+  width: 36px;
+  text-align: right;
+  font-size: 12px;
+  color: #cbd5e1;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.aether-ve-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+  cursor: pointer;
+}
+.aether-ve-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #38bdf8;
+  border: 2px solid #0f172a;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+  cursor: grab;
+}
+.aether-ve-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #38bdf8;
+  border: 2px solid #0f172a;
+  cursor: grab;
+}
+
+/* ── Preset Buttons ── */
+.aether-ve-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.aether-ve-preset-btn {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.aether-ve-preset-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.5);
+  color: #fff;
+}
+.aether-ve-preset-btn.active {
+  background: rgba(56, 189, 248, 0.35);
+  border-color: #38bdf8;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+/* ── Toggle Switches ── */
+.aether-ve-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.aether-ve-toggle-label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+.aether-ve-switch {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  cursor: pointer;
+}
+.aether-ve-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.aether-ve-switch-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 0.25s;
+}
+.aether-ve-switch input:checked + .aether-ve-switch-track {
+  background: #38bdf8;
+}
+.aether-ve-switch-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.25s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.aether-ve-switch input:checked + .aether-ve-switch-track::after {
+  transform: translateX(16px);
+}
+
+/* ── Action Buttons ── */
+.aether-ve-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.aether-ve-action-btn {
+  flex: 1 1 calc(50% - 3px);
+  padding: 8px 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.aether-ve-action-btn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #fff;
+}
+.aether-ve-action-btn.active-action {
+  background: rgba(56, 189, 248, 0.25);
+  border-color: #38bdf8;
+  color: #fff;
+}
+
+/* ── Divider ── */
+.aether-ve-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 12px 0;
+}
+
+/* ── Theater Backdrop ── */
+#aether-theater-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483645;
+  background: rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+#aether-theater-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Lift video above backdrop in theater mode */
+.aether-ve-theater-active {
+  position: relative !important;
+  z-index: 2147483646 !important;
+}

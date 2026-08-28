@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus Mode - Stay on task</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 50% 15%, #18324a, #091018 60%); color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
+    main { width: min(520px, 100%); padding: 32px; border: 1px solid rgba(255,255,255,.14); border-radius: 24px; background: rgba(15,23,42,.78); box-shadow: 0 24px 70px rgba(0,0,0,.45); text-align: center; }
+    .eyebrow { color: #38bdf8; font-size: 11px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; }
+    h1 { margin: 12px 0 10px; font-size: 28px; }
+    p { color: #94a3b8; line-height: 1.6; }
+    .goal { margin: 22px 0; padding: 14px 16px; border-left: 3px solid #38bdf8; background: rgba(56,189,248,.1); color: #f8fafc; text-align: left; line-height: 1.5; }
+    button { padding: 11px 18px; border: 1px solid rgba(255,255,255,.16); border-radius: 12px; background: rgba(255,255,255,.08); color: #fff; font: inherit; cursor: pointer; }
+    button:hover { background: rgba(56,189,248,.22); border-color: rgba(56,189,248,.6); }
+    .secondary { margin-top: 10px; color: #94a3b8; background: transparent; border-color: transparent; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow" id="modeLabel">Focus Mode</div>
+    <h1>Stay with your study goal</h1>
+    <p>This site is blocked while Focus Mode is active.</p>
+    <div class="goal" id="goal">Loading your study goal...</div>
+    <button id="backBtn" type="button">Go back</button>
+    <br>
+    <button id="stopBtn" class="secondary" type="button">Stop Focus Mode</button>
+  </main>
+  <script src="blocked.js"></script>
+</body>
+</html>

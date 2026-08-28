@@ -1,0 +1,499 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:host {
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+  line-height: 1.5;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Tooltip */
+.aether-tooltip {
+  position: fixed;
+  background: rgba(250, 252, 255, 0.014);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid rgba(255, 255, 255, 0);
+  border-radius: 20px;
+  padding: 6px 8px;
+  display: flex;
+  gap: 6px;
+  z-index: 9999;
+  pointer-events: auto;
+  box-shadow: 0 12px 32px rgba(140, 155, 185, 0.32), 0 2px 6px rgba(0, 0, 0, 0.04);
+  animation: fadeIn 0.2s ease-out;
+  transform-origin: bottom center;
+}
+
+.aether-tooltip-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  color: #334155;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 2px 2px 6px rgba(175, 188, 212, 0.35), -2px -2px 6px #ffffff;
+}
+
+.aether-tooltip-btn:hover {
+  background: linear-gradient(135deg, #ff6348, #ff4757);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 6px 14px rgba(255, 75, 60, 0.38);
+}
+
+/* Modal Framework */
+.aether-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 8, 16, 0.58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  pointer-events: auto;
+  animation: fadeIn 0.25s ease;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.aether-modal {
+  background: linear-gradient(145deg, rgba(22, 28, 44, 0.72) 0%, rgba(12, 16, 28, 0.58) 100%);
+  backdrop-filter: blur(44px) saturate(190%) brightness(102%);
+  -webkit-backdrop-filter: blur(44px) saturate(190%) brightness(102%);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  border-radius: 36px;
+  padding: 32px;
+  max-width: 720px;
+  width: 90vw;
+  max-height: 84vh;
+  overflow-y: auto;
+  animation: slideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08) inset, inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  color: #f1f5f9;
+}
+
+.aether-modal-wide {
+  max-width: 900px;
+}
+
+.aether-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.aether-modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+}
+
+.aether-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #cbd5e1;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.aether-modal-close:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #ff6b6b;
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+}
+
+.aether-modal-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 8px; /* For scrollbar */
+}
+
+/* Custom Scrollbar */
+.aether-modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.aether-modal-content::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.02);
+  border-radius: 4px;
+}
+.aether-modal-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+}
+.aether-modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Common UI Elements */
+.aether-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  gap: 16px;
+  color: #8e8e9e;
+}
+
+.aether-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(56, 139, 255, 0.2);
+  border-top-color: #388BFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.aether-btn-primary {
+  background: #388BFF;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(56, 139, 255, 0.3);
+}
+
+.aether-btn-primary:hover {
+  background: #2b77e5;
+  transform: translateY(-1px);
+}
+
+/* Summary Module */
+.aether-tag-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.aether-tag-research { background: rgba(56, 139, 255, 0.15); color: #7cb3ff; border: 1px solid rgba(56, 139, 255, 0.3); }
+.aether-tag-coding { background: rgba(48, 209, 88, 0.15); color: #6be388; border: 1px solid rgba(48, 209, 88, 0.3); }
+.aether-tag-general { background: rgba(142, 142, 158, 0.15); color: #c4c4d4; border: 1px solid rgba(142, 142, 158, 0.3); }
+
+.aether-summary-section {
+  margin-bottom: 24px;
+}
+
+.aether-summary-section h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8e8e9e;
+  margin-bottom: 12px;
+}
+
+.aether-summary-tldr {
+  font-size: 16px;
+  line-height: 1.6;
+  background: rgba(255,255,255,0.03);
+  padding: 16px;
+  border-radius: 12px;
+  border-left: 3px solid #388BFF;
+}
+
+.aether-summary-bullets {
+  list-style: none;
+}
+.aether-summary-bullets li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.aether-summary-bullets li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #388BFF;
+  font-weight: bold;
+}
+
+.aether-summary-actions {
+  list-style: none;
+}
+.aether-summary-actions li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.aether-summary-actions li::before {
+  content: '☐';
+  position: absolute;
+  left: 0;
+  color: #ff9f0a;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+/* Dictionary Module */
+.aether-dict-word {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  background: linear-gradient(90deg, #fff, #a0a0a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aether-dict-pronunciation {
+  color: #8e8e9e;
+  font-family: monospace;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.aether-dict-meaning {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.aether-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.aether-pill {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.aether-pill-syn { background: rgba(56, 139, 255, 0.1); color: #7cb3ff; border: 1px solid rgba(56, 139, 255, 0.2); }
+.aether-pill-ant { background: rgba(255, 59, 48, 0.1); color: #ff6961; border: 1px solid rgba(255, 59, 48, 0.2); }
+
+.aether-dict-eli5 {
+  background: rgba(255, 159, 10, 0.1);
+  border: 1px solid rgba(255, 159, 10, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 24px;
+}
+.aether-dict-eli5 h4 {
+  color: #ffb340;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* Geo Explorer */
+.aether-geo-layout {
+  display: flex;
+  gap: 24px;
+}
+
+.aether-geo-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.aether-geo-map {
+  flex: 1;
+}
+
+.aether-geo-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.aether-timeline {
+  border-left: 2px solid rgba(255,255,255,0.1);
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aether-timeline-item {
+  position: relative;
+}
+
+.aether-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -21px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #388BFF;
+}
+
+/* Image Analysis Module */
+.aether-img-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 300px;
+  margin: 0 auto 24px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  object-fit: contain;
+}
+
+.aether-ocr-box {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 16px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #b4b4c0;
+  white-space: pre-wrap;
+  margin-bottom: 24px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.aether-chat-container {
+  margin-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+}
+
+.aether-chat-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.aether-chat-bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.aether-chat-bubble-user {
+  align-self: flex-end;
+  background: #388BFF;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.aether-chat-bubble-ai {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.1);
+  color: #e0e0e8;
+  border-bottom-left-radius: 4px;
+}
+
+.aether-chat-input-bar {
+  display: flex;
+  background: rgba(20, 20, 30, 0.6);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  height: 44px;
+  padding: 4px;
+  align-items: center;
+}
+
+.aether-chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 0 12px;
+  outline: none;
+}
+
+.aether-chat-input::placeholder {
+  color: #8e8e9e;
+}
+
+.aether-chat-send {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #388BFF;
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.aether-chat-send:hover {
+  background: #2b77e5;
+}
+
+/* Misc */
+.aether-error {
+  color: #ff6961;
+  background: rgba(255, 59, 48, 0.1);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 59, 48, 0.2);
+}
