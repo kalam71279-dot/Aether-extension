@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minimal Dashboard</title>
+<link rel="stylesheet" href="ui-switcher.css">
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&display=swap");
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  /* =========================================================
+     BACKGROUND IMAGE
+     Paste your image URL between the quotes below.
+     Example:
+     --background-image:url("https://example.com/image.jpg");
+     ========================================================= */
+  --background-image:url("https://i.pinimg.com/1200x/87/ad/9c/87ad9cf97ca44398ea830d1996eef884.jpg");
+
+  --text:#c7d8e2;
+  --muted:#91a7b4;
+  --soft:#a9bdc9;
+  --yellow:#d1bd38;
+  --glass:rgba(20,25,28,.20);
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:#737879;
+}
+
+.dashboard{
+  position:relative;
+  width:100%;
+  height:100vh;
+  min-height:560px;
+  overflow:hidden;
+  color:var(--text);
+
+  /* CHANGE THE IMAGE URL IN :root ABOVE */
+  background-image:
+    linear-gradient(rgba(30,34,35,.38),rgba(30,34,35,.38)),
+    var(--background-image);
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+/* When no background is supplied, this keeps the page clean */
+.dashboard.no-background{
+  background:
+    radial-gradient(circle at 50% 40%,#9b9f9f 0%,#777b7c 48%,#666a6b 100%);
+}
+
+/* ---------------- TOP ICONS ---------------- */
+
+.top-icons{
+  position:absolute;
+  top:25px;
+  left:17px;
+  z-index:10;
+  display:flex;
+  gap:21px;
+}
+
+.top-icon{
+  width:19px;
+  height:19px;
+  border:0;
+  outline:0;
+  padding:0;
+  background:transparent;
+  color:#bfd0d9;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.top-icon:hover{
+  color:white;
+  transform:scale(1.12);
+}
+
+.top-icon svg{
+  width:100%;
+  height:100%;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.45;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+/* ---------------- LEFT DOT ---------------- */
+
+.side-dot{
+  position:absolute;
+  left:21px;
+  top:calc(50% - 3px);
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#b6ccd7;
+  z-index:10;
+}
+
+/* ---------------- MAIN CONTENT ---------------- */
+
+.content{
+  position:absolute;
+  left:50%;
+  top:clamp(72px, 12vh, 140px);
+  width:600px;
+  max-width:90vw;
+  transform:translateX(-50%);
+  text-align:center;
+}
+
+/* ---------------- MINIMAL CLOCK ---------------- */
+
+.clock-area{
+  position:relative;
+  height:80px;
+}
+
+.clock-hand{
+  position:absolute;
+  left:50%;
+  top:9px;
+  width:3px;
+  height:61px;
+  border-radius:3px;
+  background:var(--yellow);
+  transform-origin:50% 100%;
+  transform:translateX(-50%) rotate(18deg);
+  box-shadow:0 0 3px rgba(209,189,56,.35);
+}
+
+.clock-pin{
+  position:absolute;
+  left:50%;
+  top:68px;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#829aa7;
+  transform:translateX(-50%);
+}
+
+/* subtle second hand */
+.clock-second{
+  position:absolute;
+  left:50%;
+  top:17px;
+  width:2px;
+  height:52px;
+  background:#b9cbd4;
+  transform-origin:50% 100%;
+  transform:translateX(-50%) rotate(0deg);
+  opacity:.95;
+}
+
+.date-area{
+  position:relative;
+  margin-top:120px;
+  width:100%;
+}
+
+.today{
+  font-family:"Stardos Stencil","Stencil Std",Impact,sans-serif;
+  font-size:23px;
+  line-height:27px;
+  font-weight:600;
+  margin-bottom:0px;
+  color:#b8cbd6;
+}
+
+.full-date{
+  font-family:"Stardos Stencil","Stencil Std",Impact,sans-serif;
+  margin-top:1px;
+  
+  font-size:19px;
+  line-height:25px;
+  font-weight:400;
+  color:#96adba;
+}
+
+/* ---------------- 7 DAY CALENDAR ---------------- */
+
+.calendar{
+  position:relative;
+  width:420px;
+  max-width:100%;
+  margin:30px auto 0;
+}
+
+.calendar-head,
+.calendar-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  align-items:center;
+}
+
+.calendar-head{
+  margin-bottom:13px;
+  color:#a6b9c4;
+  font-size:14px;
+  font-weight:300;
+  letter-spacing:.2px;
+}
+
+.calendar-days{
+  color:#c0d0d9;
+  font-size:25px;
+  font-weight:300;
+}
+
+.calendar-head span,
+.calendar-days span{
+  text-align:center;
+}
+
+.calendar-head .weekend,
+.calendar-days .weekend{
+  color:var(--yellow);
+}
+
+.calendar-days .today-number{
+  color:var(--yellow);
+}
+
+/* ---------------- BOTTOM LEFT WEATHER ---------------- */
+
+.weather{
+  position:absolute;
+  left:5px;
+  bottom:10px;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.weather svg{
+  width:17px;
+  height:17px;
+  fill:none;
+  stroke:var(--yellow);
+  stroke-width:1.45;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.temperature{
+  font-size:12px;
+  color:#c0d0d8;
+}
+
+/* ---------------- BOTTOM QUOTE ---------------- */
+
+.quote{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  z-index:10;
+  width:min(600px,65vw);
+  transform:translateX(-50%);
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  color:#899da8;
+  font-size:10px;
+  font-weight:300;
+}
+
+/* ---------------- FAVORITE ---------------- */
+
+.favorite{
+  position:absolute;
+  right:14px;
+  bottom:10px;
+  z-index:10;
+  width:22px;
+  height:22px;
+  border:0;
+  background:transparent;
+  color:#afc5d0;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.favorite:hover{
+  transform:scale(1.1);
+}
+
+.favorite.active{
+  color:var(--yellow);
+}
+
+.favorite svg{
+  width:100%;
+  height:100%;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.35;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+/* ---------------- TOOLTIP / NOTIFICATION ---------------- */
+
+.notification{
+  position:absolute;
+  top:22px;
+  left:50%;
+  z-index:50;
+  padding:8px 14px;
+  border:1px solid rgba(210,225,232,.15);
+  border-radius:5px;
+  background:rgba(25,30,32,.78);
+  color:#c8d8e0;
+  font-size:12px;
+  transform:translate(-50%,-15px);
+  opacity:0;
+  pointer-events:none;
+  transition:.22s ease;
+  backdrop-filter:blur(8px);
+}
+
+.notification.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media(max-width:700px){
+  .content{
+    width:92vw;
+  }
+
+  .calendar{
+    width:370px;
+  }
+
+  .calendar-head{
+    font-size:12px;
+  }
+
+  .calendar-days{
+    font-size:22px;
+  }
+
+  .quote{
+    width:58vw;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="dashboard" id="dashboard">
+
+  <!-- ======================================================
+       TOP LEFT CONTROLS
+       ====================================================== -->
+  <div class="top-icons">
+
+    <button class="top-icon" onclick="showMessage('Gallery')" title="Gallery">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="16" rx="1.5"/>
+        <circle cx="8" cy="9" r="1.4"/>
+        <path d="M4 17l5-5 3.5 3 2.5-2.5 5 4.5"/>
+      </svg>
+    </button>
+
+    <button class="top-icon" onclick="showMessage('Apps')" title="Apps">
+      <svg viewBox="0 0 24 24">
+        <circle cx="7" cy="7" r="2"/>
+        <circle cx="17" cy="7" r="2"/>
+        <circle cx="7" cy="17" r="2"/>
+        <circle cx="17" cy="17" r="2"/>
+        <path d="M9 7h6M7 9v6M17 9v6M9 17h6"/>
+      </svg>
+    </button>
+
+    <button class="top-icon" onclick="showMessage('Calendar')" title="Calendar">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="16" rx="1.5"/>
+        <path d="M7 3v4M17 3v4M3 10h18"/>
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- Small indicator on left -->
+  <div class="side-dot"></div>
+
+
+  <!-- ======================================================
+       MAIN CONTENT
+       ====================================================== -->
+  <section class="content">
+
+    <div class="clock-area">
+
+      <!-- Clock hand -->
+      <div class="clock-hand" id="clockHand"></div>
+
+      <!-- Live second hand -->
+      <div class="clock-second" id="secondHand"></div>
+
+      <!-- Clock center point -->
+      <div class="clock-pin"></div>
+
+    </div>
+
+    <!-- Current date, separated from the analog clock -->
+    <div class="date-area">
+      <div class="today" id="dayName">Sunday</div>
+      <div class="full-date" id="fullDate">23 August</div>
+    </div>
+
+
+    <!-- Seven-day calendar -->
+    <div class="calendar">
+
+      <div class="calendar-head" id="calendarHead"></div>
+
+      <div class="calendar-days" id="calendarDays"></div>
+
+    </div>
+
+
+  </section>
+
+
+  <!-- ======================================================
+       WEATHER
+       ====================================================== -->
+  <div class="weather">
+
+    <svg viewBox="0 0 24 24">
+      <path d="M6 18h10.5a3.5 3.5 0 0 0 .4-7A5.5 5.5 0 0 0 6.3 9.2 4.4 4.4 0 0 0 6 18Z"/>
+      <path d="M8 21h.01M14 21h.01"/>
+    </svg>
+
+    <span class="temperature" id="temperature">31°</span>
+
+  </div>
+
+
+  <!-- ======================================================
+       QUOTE
+       ====================================================== -->
+  <div class="quote" id="quote">
+    Wi-Fi 6 is the first wireless upgrade in years that isn't chasing speed, and home networks need it.
+  </div>
+
+
+  <!-- ======================================================
+       FAVORITE
+       ====================================================== -->
+  <button class="favorite" id="favorite" onclick="toggleFavorite()" title="Favorite">
+
+    <svg viewBox="0 0 24 24">
+      <path d="M12 3.7l2.6 5.25 5.8.84-4.2 4.1.99 5.78L12 16.94 6.81 19.67l.99-5.78-4.2-4.1 5.8-.84L12 3.7Z"/>
+    </svg>
+
+  </button>
+
+
+  <!-- Notification -->
+  <div class="notification" id="notification"></div>
+
+</div>
+
+
+<script type="application/json" aria-hidden="true">
+
+/* ==========================================================
+   DASHBOARD DATA
+   ========================================================== */
+
+const dayNames = [
+  "SUN","MON","TUE","WED","THU","FRI","SAT"
+];
+
+const monthNames = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
+];
+
+
+/* ==========================================================
+   BACKGROUND IMAGE
+   ==========================================================
+
+   If you want to set the image from JavaScript instead,
+   simply put your image URL here.
+
+   Example:
+   const backgroundImage = "https://example.com/city.jpg";
+
+   Leave it empty if you want no background.
+   ========================================================== */
+
+const backgroundImage = getComputedStyle(document.documentElement)
+  .getPropertyValue("--background-image")
+  .trim();
+
+
+/* ==========================================================
+   SET BACKGROUND
+   ========================================================== */
+
+function setBackground(){
+
+  const dashboard = document.getElementById("dashboard");
+
+  if(backgroundImage.trim() !== ""){
+
+    dashboard.classList.remove("no-background");
+
+    dashboard.style.backgroundImage =
+      `linear-gradient(rgba(20,25,28,.42),rgba(20,25,28,.42)),
+       ${backgroundImage}`;
+
+    dashboard.style.backgroundSize = "cover";
+    dashboard.style.backgroundPosition = "center";
+    dashboard.style.backgroundRepeat = "no-repeat";
+
+  } else {
+
+    dashboard.classList.add("no-background");
+    dashboard.style.backgroundImage = "";
+
+  }
+
+}
+
+
+/* ==========================================================
+   CREATE THE 7-DAY CALENDAR
+   ========================================================== */
+
+function updateCalendar(){
+
+  const now = new Date();
+
+  const today = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+
+  /*
+     Start from Sunday.
+     This creates:
+
+     SUN MON TUE WED THU FRI SAT
+      23  24  25  26  27  28  29
+
+     automatically for the current week.
+  */
+
+  const start = new Date(today);
+
+  start.setDate(
+    today.getDate() - today.getDay()
+  );
+
+
+  const head = document.getElementById("calendarHead");
+  const days = document.getElementById("calendarDays");
+
+  head.innerHTML = "";
+  days.innerHTML = "";
+
+
+  for(let i = 0; i < 7; i++){
+
+    const date = new Date(start);
+
+    date.setDate(
+      start.getDate() + i
+    );
+
+
+    /* Week name */
+
+    const name = document.createElement("span");
+
+    name.textContent = dayNames[i];
+
+    if(i === 0 || i === 6){
+      name.classList.add("weekend");
+    }
+
+    head.appendChild(name);
+
+
+    /* Date number */
+
+    const number = document.createElement("span");
+
+    number.textContent = date.getDate();
+
+
+    if(
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate()
+    ){
+      number.classList.add("today-number");
+    }
+
+    if(i === 0 || i === 6){
+      number.classList.add("weekend");
+    }
+
+    days.appendChild(number);
+
+  }
+
+}
+
+
+/* ==========================================================
+   UPDATE DATE
+   ========================================================== */
+
+function updateDate(){
+
+  const now = new Date();
+
+  document.getElementById("dayName").textContent =
+    now.toLocaleDateString(
+      "en-US",
+      {weekday:"long"}
+    );
+
+  document.getElementById("fullDate").textContent =
+    `${now.getDate()} ${monthNames[now.getMonth()]}`;
+
+}
+
+
+/* ==========================================================
+   LIVE CLOCK HAND
+   ========================================================== */
+
+function updateClock(){
+
+  const now = new Date();
+
+  const minutes =
+    now.getMinutes() +
+    now.getSeconds() / 60;
+
+  const seconds =
+    now.getSeconds() +
+    now.getMilliseconds() / 1000;
+
+
+  /*
+     Main yellow hand follows minutes.
+  */
+
+  const minuteAngle =
+    minutes * 6;
+
+
+  document.getElementById("clockHand").style.transform =
+    `translateX(-50%) rotate(${minuteAngle}deg)`;
+
+
+  /*
+     Small blue/gray hand follows seconds.
+  */
+
+  const secondAngle =
+    seconds * 6;
+
+
+  document.getElementById("secondHand").style.transform =
+    `translateX(-50%) rotate(${secondAngle}deg)`;
+
+}
+
+
+/* ==========================================================
+   FAVORITE BUTTON
+   ========================================================== */
+
+function toggleFavorite(){
+
+  const button =
+    document.getElementById("favorite");
+
+  button.classList.toggle("active");
+
+
+  if(button.classList.contains("active")){
+
+    showMessage("Added to favorites");
+
+  }else{
+
+    showMessage("Removed from favorites");
+
+  }
+
+}
+
+
+/* ==========================================================
+   TOP ICON NOTIFICATION
+   ========================================================== */
+
+let notificationTimer;
+
+function showMessage(message){
+
+  const notification =
+    document.getElementById("notification");
+
+  notification.textContent = message;
+
+  notification.classList.add("show");
+
+  clearTimeout(notificationTimer);
+
+  notificationTimer =
+    setTimeout(
+      () => notification.classList.remove("show"),
+      1400
+    );
+
+}
+
+
+/* ==========================================================
+   INITIALIZE
+   ========================================================== */
+
+setBackground();
+updateDate();
+updateCalendar();
+updateClock();
+
+
+/*
+   Update clock every second.
+*/
+setInterval(updateClock,1000);
+
+
+/*
+   Check date/calendar every minute.
+*/
+setInterval(() => {
+
+  updateDate();
+  updateCalendar();
+
+},60000);
+
+</script>
+
+<script src="index2.js"></script>
+<script src="ui-switcher.js"></script>
+</body>
+</html>

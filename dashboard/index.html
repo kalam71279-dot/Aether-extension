@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether OS Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ui-switcher.css">
+</head>
+<body>
+    <div class="overlay"></div>
+    <main class="dashboard-grid">
+        <!-- LEFT COLUMN: Radial Dial & Feature Card -->
+        <section class="col-left">
+            <div class="dial-container" id="dial-container">
+                <svg id="radial-dial" viewBox="0 0 500 500" width="500" height="500">
+                    <g id="sectors-group"></g>
+                    <circle cx="250" cy="250" r="10" fill="#38BDF8" filter="drop-shadow(0 0 8px rgba(56, 189, 248, 0.8))"/>
+                </svg>
+            </div>
+            <div class="feature-card glass" id="feature-card">
+                <div class="feature-icon" id="card-icon">☑</div>
+                <h2 class="feature-title" id="card-title">Tasks & Issues</h2>
+                <p class="feature-desc" id="card-desc">Manage your daily tasks and active sprint issues seamlessly.</p>
+                <div class="feature-hint">Scroll to explore</div>
+            </div>
+        </section>
+
+        <!-- CENTER COLUMN: Date, Search, Shortcuts -->
+        <section class="col-center">
+            <div class="date-header">
+                <h1 id="day-name">THURSDAY</h1>
+                <div class="date-full" id="full-date">30 JULY, 2026</div>
+                <div class="live-time" id="live-time">23:35</div>
+            </div>
+
+            <div class="search-container glass">
+                <input type="text" id="search-input" placeholder="Search the web..." autocomplete="off" autofocus>
+                <button id="search-btn" aria-label="Search">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="shortcuts-container">
+                <div class="shortcuts-row" id="shortcuts-row">
+                    <!-- Shortcuts rendered here -->
+                </div>
+                <div class="add-shortcut-form glass hidden" id="add-shortcut-form">
+                    <input type="text" id="shortcut-name" placeholder="Name (e.g. YouTube)">
+                    <input type="url" id="shortcut-url" placeholder="https://youtube.com">
+                    <div class="form-actions">
+                        <button id="save-shortcut-btn" class="glass-btn">Save</button>
+                        <button id="cancel-shortcut-btn" class="glass-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT COLUMN: Ruler Clock -->
+        <section class="col-right">
+            <canvas id="ruler-canvas" width="120"></canvas>
+            <div class="ruler-center-indicator">
+                <div class="ruler-line"></div>
+                <div class="ruler-readout">
+                    <div class="seconds-callout" id="seconds-callout">00</div>
+                    <div class="hm-callout" id="hm-callout">00:00 AM</div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+    <script src="ui-switcher.js"></script>
+</body>
+</html>

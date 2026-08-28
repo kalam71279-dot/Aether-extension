@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether OS Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0f16;
+            --card-bg: rgba(20, 20, 35, 0.6);
+            --input-bg: rgba(20, 20, 30, 0.8);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --accent-blue: #388BFF;
+            --accent-cyan: #38BDF8;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --border-faint: rgba(255, 255, 255, 0.06);
+            --error-color: #ef4444;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            width: 380px;
+            min-height: 500px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Header */
+        header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-faint);
+        }
+        header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        header p {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: rgba(56, 189, 248, 0.7);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            width: 100%;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        .tab-btn:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .tab-btn.active {
+            background: rgba(56, 139, 255, 0.15);
+            color: var(--accent-blue);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        /* Content Areas */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .form-control {
+            width: 100%;
+            height: 44px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            color: var(--text-main);
+            padding: 0 16px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        .form-control:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(56, 139, 255, 0.3);
+        }
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 34px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .password-toggle:hover {
+            color: var(--text-main);
+        }
+        .error-msg {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+        .btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Status Indicator */
+        .status-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .status-dot.configured { background-color: var(--success-color); box-shadow: 0 0 6px rgba(34, 197, 94, 0.4); }
+        .status-dot.missing { background-color: var(--warning-color); box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
+
+        /* Highlights Section */
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .highlights-list {
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .highlight-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 10px;
+            position: relative;
+            border: 1px solid var(--border-light);
+            transition: all 0.2s;
+        }
+        .highlight-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .tag-pill {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .tag-research { background: rgba(56, 139, 255, 0.2); color: var(--accent-blue); }
+        .tag-coding { background: rgba(34, 197, 94, 0.2); color: var(--success-color); }
+        .tag-general { background: rgba(156, 163, 175, 0.2); color: #9ca3af; }
+        
+        .timestamp {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .highlight-text {
+            font-size: 13px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-style: italic;
+        }
+        .highlight-tldr {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            background: rgba(0,0,0,0.2);
+            padding: 6px 8px;
+            border-radius: 6px;
+        }
+        .source-link {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: inline-block;
+            max-width: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .source-link:hover {
+            color: var(--accent-cyan);
+            text-decoration: underline;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error-color);
+            border: none;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .highlight-card:hover .delete-btn {
+            opacity: 1;
+        }
+        .delete-btn:hover {
+            background: var(--error-color);
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .clear-all-btn {
+            display: block;
+            margin: 16px auto 0;
+            background: transparent;
+            border: none;
+            color: var(--error-color);
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .clear-all-btn:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: rgba(34, 197, 94, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: var(--success-color);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast-container.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .focus-pinned {
+            display: none;
+            padding: 12px 20px;
+            background: rgba(56, 189, 248, 0.1);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.22);
+            color: #dbeafe;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .focus-pinned.active { display: block; }
+        .focus-pinned strong { display: block; color: #38bdf8; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+        .focus-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 14px; padding: 14px; }
+        .focus-card p { color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 14px; }
+        .focus-mode-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        .focus-mode-row label { flex: 1; padding: 9px; border: 1px solid var(--border-light); border-radius: 10px; font-size: 11px; color: var(--text-muted); cursor: pointer; }
+        .focus-mode-row label:has(input:checked) { border-color: var(--accent-cyan); color: white; background: rgba(56, 189, 248, .12); }
+        .focus-mode-row input { accent-color: var(--accent-cyan); }
+        .focus-goal { width: 100%; min-height: 72px; padding: 10px; resize: vertical; background: var(--input-bg); border: 1px solid var(--border-light); border-radius: 10px; color: white; font-size: 13px; outline: none; }
+        .focus-card .btn-primary { margin-top: 12px; }
+        .focus-stop { background: rgba(239, 68, 68, .2); border: 1px solid rgba(239, 68, 68, .45); }
+        
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Aether OS</h1>
+        <p>NextGen Workspace</p>
+    </header>
+
+    <div id="focusPinned" class="focus-pinned"><strong>Focus active</strong><span id="focusPinnedGoal"></span></div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-target="settings-tab">⚙ Settings</button>
+        <button class="tab-btn" data-target="highlights-tab">📋 Highlights</button>
+        <button class="tab-btn" data-target="focus-tab">🎯 Focus</button>
+    </div>
+
+    <div id="focus-tab" class="tab-content">
+        <div class="focus-card">
+            <p>Stay on task with a required study goal and distraction blocking.</p>
+            <div class="focus-mode-row">
+                <label><input type="radio" name="popupFocusMode" value="strict" checked> Strict Study</label>
+                <label><input type="radio" name="popupFocusMode" value="research"> Research</label>
+            </div>
+            <textarea id="popupFocusGoal" class="focus-goal" placeholder="What are you doing? e.g. Completing Data Structures assignment"></textarea>
+            <button id="focusActionBtn" class="btn-primary">Start Focus</button>
+        </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="settings-tab" class="tab-content active">
+        <div class="form-group">
+            <label for="apiProvider">AI Provider</label>
+            <select id="apiProvider" class="form-control">
+                <option value="openai">OpenAI</option>
+                <option value="pollinations">Pollinations (Free)</option>
+                <option value="groq">Groq</option>
+                <option value="openrouter">OpenRouter</option>
+                <option value="custom">Custom</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="apiEndpoint">API Endpoint</label>
+            <input type="text" id="apiEndpoint" class="form-control" spellcheck="false">
+        </div>
+
+        <div class="form-group">
+            <label for="apiKey">API Key</label>
+            <input type="password" id="apiKey" class="form-control" placeholder="Enter your API key..." spellcheck="false">
+            <button type="button" class="password-toggle" id="togglePassword">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+            <div id="apiKeyError" class="error-msg">API Key is required.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="apiModel">Model</label>
+            <input type="text" id="apiModel" class="form-control" spellcheck="false">
+        </div>
+
+        <button id="saveSettingsBtn" class="btn-primary">Save Settings</button>
+
+        <div class="status-container">
+            <div id="apiStatusDot" class="status-dot missing"></div>
+            <span id="apiStatusText">API key required</span>
+        </div>
+    </div>
+
+    <!-- Highlights Tab -->
+    <div id="highlights-tab" class="tab-content">
+        <div class="form-group search-bar">
+            <input type="text" id="highlightSearch" class="form-control" placeholder="Filter highlights...">
+        </div>
+        
+        <div id="highlightsList" class="highlights-list">
+            <!-- Highlights rendered here via JS -->
+        </div>
+
+        <button id="clearAllBtn" class="clear-all-btn" style="display: none;">Clear All Highlights</button>
+    </div>
+
+    <div id="toast" class="toast-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span id="toastMsg">Settings saved!</span>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forest Dashboard</title>
+<link rel="stylesheet" href="ui-switcher.css">
+<style>
+:root{
+  --bg-url:url("https://i.pinimg.com/1200x/dd/aa/a2/ddaaa28914b6f167550b608d13717c58.jpg");
+  --text:#e9eef2;
+  --muted:#8f9aa2;
+  --line:rgba(190,205,214,.28);
+  --glass:rgba(34,38,40,.55);
+  --glass2:rgba(66,70,72,.42);
+  --accent:#c8d84c;
+  --blue:#86b6df;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0}
+body{
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:var(--text);
+  overflow:hidden;
+  background:#171b1c;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(rgba(12,15,16,.38),rgba(12,15,16,.57)),
+    var(--bg-url) center/cover no-repeat;
+  z-index:-2;
+}
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at 50% 10%,rgba(255,255,255,.06),transparent 42%),
+             linear-gradient(90deg,rgba(0,0,0,.08),rgba(0,0,0,.02),rgba(0,0,0,.08));
+  z-index:-1;
+  pointer-events:none;
+}
+button,input{font:inherit}
+button{color:inherit}
+.dashboard{
+  width:100%;
+  height:100%;
+  padding:13px 16px 12px;
+  display:grid;
+  grid-template-rows:42px 178px 82px minmax(0,1fr) 24px !important;
+  gap:8px;
+  min-width:900px;
+}
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.quick-icons{display:flex;gap:17px;align-items:center}
+.top-icon{
+  width:18px;height:18px;display:grid;place-items:center;
+  color:#a7b3ba;font-size:16px;opacity:.9;
+}
+.socials{display:flex;gap:8px;align-items:center;justify-content:center}
+.social{
+  width:31px;height:31px;border-radius:7px;
+  display:grid;place-items:center;
+  font-weight:800;font-size:18px;color:white;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+  transition:.18s ease; cursor:pointer;
+}
+.social:hover{transform:translateY(-2px) scale(1.05);filter:brightness(1.1)}
+.gmail{background:#fff;color:#e94b35}
+.youtube{background:#ff0033;font-size:13px}
+.facebook{background:#1877f2}
+.amazon{background:#ff9900;font-size:19px}
+.openai{background:#f4f4f4;color:#111;font-size:14px}
+.reddit{background:#ff5b20}
+.x{background:#050505}
+.linkedin{background:#0a66c2;font-size:15px}
+.instagram{background:linear-gradient(135deg,#7b39d5,#ef2f6d,#ffb13b)}
+
+.content-top{
+  display:grid;
+  grid-template-columns:230px minmax(410px,1fr) minmax(360px,1fr);
+  gap:12px;
+  align-items:stretch;
+}
+.clock-card{
+  height:152px;
+  border-radius:22px;
+  background:rgba(62,63,63,.68);
+  border:1px solid rgba(255,255,255,.05);
+  box-shadow:0 10px 35px rgba(0,0,0,.12);
+  display:grid;place-items:center;
+  position:relative;overflow:hidden;
+}
+.clock{
+  width:86px;height:86px;border-radius:50%;position:relative;
+}
+.clock:before{
+  content:"";position:absolute;inset:3px;border-radius:50%;
+  background:rgba(255,255,255,.02);
+}
+.hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:4px}
+.hour{width:4px;height:30px;background:#b6d7e9;transform:translateX(-50%) rotate(350deg)}
+.minute{width:3px;height:40px;background:#b9cbd5;transform:translateX(-50%) rotate(12deg)}
+.second{width:2px;height:48px;background:#d8c846;transform:translateX(-50%) rotate(238deg)}
+.pin{position:absolute;width:6px;height:6px;border-radius:50%;background:#d8dfe2;left:50%;top:50%;transform:translate(-50%,-50%)}
+
+.middle-top{display:grid;grid-template-columns:220px 1fr;gap:12px;min-width:0}
+.calendar-mini{
+  padding:3px 6px;
+  min-width:0;
+}
+.calendar-head{display:flex;justify-content:space-between;color:#74808a;font-size:8px;margin-bottom:6px}
+.calendar-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+  text-align:center;font-size:8px;color:#8c979e;
+}
+.calendar-grid span{height:15px;display:grid;place-items:center}
+.calendar-grid .dim{opacity:.42}
+.calendar-grid .active{color:#f3d63e}
+.calendar-grid .today{color:#eaf4fa;font-weight:700}
+.metrics{
+  display:flex;flex-direction:column;gap:7px;
+  padding:1px 0;
+}
+.metric{
+  display:flex;align-items:center;gap:10px;color:#96a2aa;font-size:9px;
+}
+.metric-icon{width:20px;color:#c9d63c;font-size:12px}
+.metric strong{display:block;color:#cbd4d9;font-size:9px;font-weight:500}
+.search-area{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;
+  min-width:0;
+}
+.mode-row{
+  height:26px;display:flex;gap:16px;align-items:center;color:#7f8a91;font-size:8px;
+}
+.mode-row span:first-child{color:#c3ccd1}
+.search{
+  width:min(100%,330px);height:37px;border-radius:20px;
+  border:1px solid rgba(210,220,225,.16);
+  background:rgba(55,59,60,.66);
+  color:#e7ecef;outline:none;padding:0 42px 0 16px;
+  box-shadow:0 7px 20px rgba(0,0,0,.12);
+}
+.search::placeholder{color:#8b969d}
+.search-icon{
+  position:absolute;right:calc(50% - 165px + 12px);top:52px;
+  color:#9eabb1;font-size:14px;pointer-events:none;
+}
+.news-list{
+  padding:5px 5px 0 0;
+  display:flex;flex-direction:column;gap:13px;
+  margin-left: 250px;
+}
+.news-item{font-size:8px;color:#8b979e;line-height:1.35}
+.news-item small{display:block;color:#aab4b9;margin-bottom:2px}
+.news-item b{color:#a9b6bd;font-weight:500}
+
+.feature-row{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  align-items:center;
+  align-content:center;
+  height:82px;
+  min-height:82px;
+  max-height:82px;
+  overflow:hidden;
+  padding:0;
+}
+.feature{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.feature-box{
+  width:34px;height:34px;border-radius:6px;
+  display:grid;place-items:center;
+  background:rgba(80,84,84,.62);
+  border:1px solid rgba(255,255,255,.04);
+  color:#b8c6ce;font-size:18px;flex:none;
+}
+.feature-copy{min-width:0}
+.feature-copy b{font-size:8px;font-weight:500;color:#aeb9bf;display:block}
+.feature-copy span{font-size:7px;color:#7f8a91;display:block;margin-top:3px}
+.date-tile .feature-box{font-size:15px;color:#b9c9d0}
+.weather .feature-box{color:#d5db3f}
+.news .feature-box{color:#a9c2d4}
+.note .feature-box{color:#b9c5cc}
+.add-note{cursor:pointer}
+.add-note:hover .feature-box{background:rgba(115,120,120,.65)}
+
+.week{
+  --week-gap:14px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  min-height:0;
+  min-width:0;
+  overflow:hidden;
+  padding:2px 2px 0;
+  border-top:1px solid rgba(220,230,235,.08);
+}
+.day{
+  position:relative;
+  min-width:0;
+  min-height:0;
+  padding:5px 10px 10px;
+  border-radius:10px;
+  background:rgba(22,27,29,.20);
+  border:1px solid rgba(220,230,235,.07);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.day:before{
+  content:"";position:absolute;left:10px;right:10px;top:38px;height:1px;
+  background:rgba(205,218,226,.34);
+}
+.day.today{
+  background:rgba(48,52,47,.28);
+  border-color:rgba(201,214,75,.14);
+}
+.day.today:before{background:#c3d34b}
+.day-label{
+  font-size:8px;
+  letter-spacing:.08em;
+  color:#aebbc2;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  font-weight:600;
+}
+.day-number{
+  font-size:27px;
+  font-weight:400;
+  color:#f0f4f5;
+  line-height:1;
+  text-shadow:0 1px 8px rgba(0,0,0,.28);
+}
+.day.today .day-number{color:#d3c737}
+.dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-left:5px;vertical-align:middle;background:#c5d5dc}
+.mon .dot{background:#e8db43}.tue .dot{background:#f0674e}.wed .dot{background:#76e49c}
+.thu .dot{background:#f1db21}.fri .dot{background:#d19ecb}
+.events{
+  margin-top:22px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px 9px;
+  align-items:center;
+  color:#d0d8dc;
+  font-size:9px;
+  line-height:1.5;
+  white-space:normal;
+  overflow:visible;
+  min-height:28px;
+}
+.event-icon{
+  font-size:10px;
+  color:#b8c8d0;
+  flex:none;
+}
+.event{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
+}
+.badge{
+  background:rgba(115,122,124,.62);
+  border:1px solid rgba(220,225,227,.10);
+  border-radius:9px;
+  padding:2px 7px;
+  font-size:7px;
+  color:#e0e6e8;
+  flex:none;
+}
+
+.bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:8px;color:#7e8a91;
+}
+.section{padding-left:1px}
+.folder{font-size:17px;color:#85949d;cursor:pointer}
+.ticker{flex:1;text-align:center;padding:0 20px}
+.footer-actions{display:flex;gap:16px;align-items:center}
+.footer-actions span{color:#91a0a8;font-size:13px;cursor:pointer}
+.mail-count{font-size:8px;color:#adb7bc}
+
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;place-items:center;z-index:20;
+}
+.modal{
+  width:min(420px,90vw);background:rgba(35,39,40,.96);
+  border:1px solid rgba(255,255,255,.12);border-radius:16px;
+  padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.4)
+}
+.modal h3{margin:0 0 12px;font-size:15px;font-weight:500}
+.modal textarea{
+  width:100%;height:110px;resize:none;border-radius:10px;
+  background:#272c2d;border:1px solid #3d4548;color:#e5eaed;
+  padding:12px;outline:none;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.modal button{border:0;border-radius:8px;padding:8px 14px;background:#4c5558;cursor:pointer}
+.modal .save{background:#aebd3e;color:#1c211e}
+@media(max-width:1050px){
+  .dashboard{min-width:0;padding:10px;grid-template-rows:42px 178px 82px minmax(0,1fr) 24px !important}
+  .content-top{grid-template-columns:190px 1fr}
+  .news-list{display:none}
+  .middle-top{grid-template-columns:180px 1fr}
+  .socials{gap:5px}.social{width:28px;height:28px}
+  .clock-card{height:145px}
+}
+@media(max-width:700px){
+  .week{--week-gap:6px;gap:var(--week-gap);padding-left:0;padding-right:0}
+  .day{padding:5px 6px 8px}
+  .day:before{left:6px;right:6px}
+  .day-label{font-size:7px;letter-spacing:0}
+  .day-number{font-size:20px}
+  .events{font-size:7px;gap:4px 5px}
+}
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+  <header class="topbar">
+    <div class="quick-icons">
+      <span class="top-icon">⌂</span>
+      <span class="top-icon">✣</span>
+      <span class="top-icon">▣</span>
+    </div>
+
+    
+  </header>
+
+  <section class="content-top">
+    <div class="clock-card">
+      <div class="clock">
+        <div class="hand hour"></div>
+        <div class="hand minute"></div>
+        <div class="hand second" id="secondHand"></div>
+        <div class="pin"></div>
+      </div>
+    </div>
+
+    <div class="middle-top">
+      <div class="calendar-mini">
+        <div class="calendar-head">
+          <span id="monthName">August</span>
+          <span id="yearName">2026</span>
+        </div>
+        <div class="calendar-grid" id="miniCalendar"></div>
+      </div>
+
+      <div class="search-area">
+        <div class="mode-row">
+          <span>◉ Frequent</span>
+          <span>☆ Favorites bar</span>
+          <span>▣</span>
+          <span>☷</span>
+        </div>
+        <input id="searchBox" class="search" placeholder="Search or @ for AI" autocomplete="off">
+        <span class="search-icon">⌕</span>
+
+        
+      </div>
+    </div>
+
+    <div class="news-list" data-news-list>
+      <div class="news-item"><small>Loading...</small><b>Fetching live headlines...</b></div>
+      <div class="news-item"><small>Loading...</small><b>Fetching live headlines...</b></div>
+      <div class="news-item"><small>Loading...</small><b>Fetching live headlines...</b></div>
+    </div>
+  </section>
+
+  <section class="feature-row">
+    <div class="feature date-tile">
+      <div class="feature-box" id="dateNumber">24</div>
+      <div class="feature-copy"><b id="monthShort">August</b><span id="weekday">Monday</span></div>
+    </div>
+
+    <div class="feature weather">
+      <div class="feature-box">☀</div>
+      <div class="feature-copy"><b>7°</b><span>Weather</span></div>
+    </div>
+
+    <div class="feature news">
+      <div class="feature-box">▤</div>
+      <div class="feature-copy"><b>News</b><span>#Technology</span></div>
+    </div>
+
+    <div class="feature note add-note" id="addNote">
+      <div class="feature-box">⌕</div>
+      <div class="feature-copy"><b>Add note</b><span>Quick note</span></div>
+    </div>
+  </section>
+
+  <section class="week" id="weekCalendar" aria-label="Current and next week"></section>
+
+  <footer class="bottom">
+    <div class="section">My Section</div>
+    <div class="folder" title="Open section">⊞</div>
+    <div class="ticker" data-news-ticker>Loading live news...</div>
+    <div class="footer-actions">
+      <span>▱</span><span class="mail-count">20</span><span>☆</span>
+    </div>
+  </footer>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <h3>Quick Note</h3>
+    <textarea id="noteText" placeholder="Write something..."></textarea>
+    <div class="modal-actions">
+      <button id="cancelNote">Cancel</button>
+      <button class="save" id="saveNote">Save note</button>
+    </div>
+  </div>
+</div>
+
+<script src="index3.js"></script>
+<script src="news.js"></script>
+<script src="ui-switcher.js"></script>
+</body>
+</html>
